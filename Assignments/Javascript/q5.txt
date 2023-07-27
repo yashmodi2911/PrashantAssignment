@@ -1,0 +1,59 @@
+// SortArray constructor function
+
+function SortArray(arr) {
+  this.originalArray = arr;
+
+  // Private function to sort the array
+  const sortArray = function () {
+    this.originalArray.sort((a, b) => a - b);
+  };
+
+  // Get function to get the sorted array
+  this.getSortedArray = function () {
+    sortArray.call(this);
+    return this.originalArray.slice(); // Return a copy of the sorted array
+  };
+}
+
+// SortObjectArray constructor function (extends SortArray)
+
+function SortObjectArray(arr, key) {
+  
+  SortArray.call(this, arr);
+
+  // Sort the array of JSON objects based on the specified key
+  
+  const sortObjectArray = function () {
+    this.originalArray.sort((a, b) => a[key] - b[key]);
+  };
+
+  // Override the getSortedArray function to sort the JSON objects
+  
+  this.getSortedArray = function () {
+    sortObjectArray.call(this);
+    return this.originalArray.slice(); 
+  };
+}
+
+// Creating an instance of SortArray
+const arrayToSort = [3, 1, 4, 1, 5, 9, 2, 6, 5];
+const sortedArray = new SortArray(arrayToSort);
+console.log("Sorted Array:", sortedArray.getSortedArray()); // Output: [1, 1, 2, 3, 4, 5, 5, 6, 9]
+
+// Creating an instance of SortObjectArray
+const objectArrayToSort = [
+  { id: 3, name: "John" },
+  { id: 1, name: "Jane" },
+  { id: 4, name: "Bob" },
+  { id: 2, name: "Alice" },
+];
+const sortedObjectArray = new SortObjectArray(objectArrayToSort, "id");
+console.log("Sorted Object Array:", sortedObjectArray.getSortedArray());
+/* Output:
+[
+  { id: 1, name: 'Jane' },
+  { id: 2, name: 'Alice' },
+  { id: 3, name: 'John' },
+  { id: 4, name: 'Bob' }
+]
+*/
